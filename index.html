@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tech Quiz</title>
+
+<style>
+body{
+font-family:Arial, sans-serif;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.quiz{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+width:400px;
+text-align:center;
+}
+
+button{
+display:block;
+width:100%;
+margin:8px 0;
+padding:10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+}
+
+.option{
+background:#334155;
+color:white;
+}
+
+.option:hover{
+background:#475569;
+}
+
+.next{
+background:#22c55e;
+color:white;
+margin-top:15px;
+}
+
+.result{
+font-size:22px;
+margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz">
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<button class="next" onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+
+const quiz = [
+{
+question:"What does HTML stand for?",
+options:[
+"Hyper Text Markup Language",
+"High Tech Modern Language",
+"Home Tool Markup Language",
+"Hyperlink Text Management Language"
+],
+correct:0
+},
+
+{
+question:"Which of the following is a JavaScript framework?",
+options:["Django","Flask","React","Laravel"],
+correct:2
+},
+
+{
+question:"What does CSS stand for?",
+options:[
+"Computer Style Sheets",
+"Cascading Style Sheets",
+"Creative Style System",
+"Colorful Style Sheets"
+],
+correct:1
+},
+
+{
+question:"Which method adds an element to the end of an array?",
+options:["push()","pop()","shift()","unshift()"],
+correct:0
+},
+
+{
+question:"How do you declare a variable in modern JavaScript?",
+options:["var x = 5","let x = 5","variable x = 5","v x = 5"],
+correct:1
+}
+]
+
+let current = 0
+let score = 0
+let selected = null
+
+function loadQuestion(){
+selected = null
+const q = quiz[current]
+
+document.getElementById("question").innerText =
+(q.question)
+
+const answersDiv = document.getElementById("answers")
+answersDiv.innerHTML=""
+
+q.options.forEach((option,index)=>{
+const btn = document.createElement("button")
+btn.innerText = option
+btn.className="option"
+
+btn.onclick = ()=>{
+selected=index
+}
+
+answersDiv.appendChild(btn)
+})
+}
+
+function nextQuestion(){
+
+if(selected===null)return
+
+if(selected===quiz[current].correct){
+score++
+}
+
+current++
+
+if(current>=quiz.length){
+showResult()
+return
+}
+
+loadQuestion()
+}
+
+function showResult(){
+
+document.querySelector(".quiz").innerHTML=`
+
+<div class="result">
+Your score: ${score} / ${quiz.length}
+</div>
+
+<button onclick="restart()">Restart Quiz</button>
+
+`
+}
+
+function restart(){
+current=0
+score=0
+loadQuestion()
+}
+
+loadQuestion()
+
+</script>
+
+</body>
+</html>
